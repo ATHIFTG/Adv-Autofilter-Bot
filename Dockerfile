@@ -1,19 +1,13 @@
-FROM python:3.10
+FROM python:3.10.8-slim-buster
 
-WORKDIR /sakura
+RUN apt update && apt upgrade -y
+RUN apt install git -y
+COPY requirements.txt /requirements.txt
 
-# Copy the requirements.txt file from the host to the /sakura directory in the Docker image
-COPY requirements.txt /sakura/
+RUN cd /
+RUN pip3 install -U pip && pip3 install -U -r requirements.txt
+WORKDIR /Autofilter 
 
-# Run the pip install command to install the Python dependencies
-RUN pip install -r requirements.txt
-
-RUN pip install pyrogram 
-
-RUN pip install --upgrade pyrogram
-
-RUN pip install tqdm
-
-COPY ..
+COPY . .
 
 CMD ["python3", "bot.py"]
